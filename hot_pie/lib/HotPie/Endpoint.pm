@@ -3,7 +3,8 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use Devel::REPL;
 
-has repl_data => sub { get_repl() };
+my $repl = get_repl();
+has repl_data => sub { $repl };
 
 sub show_console {
   my $self = shift;
@@ -25,7 +26,9 @@ sub run_repl {
   my ($repl, $term, $cmd) = @_;
   $term->cmd($cmd);
   $repl->run_once;
-  return ${$repl->term->string};
+  my $string = ${$repl->term->string};
+  $repl->term->clear_output;
+  return $string;
 }
 
 
@@ -59,6 +62,11 @@ sub string {
     $self->{string} = \$string;
   }
   $self->{string};
+}
+sub clear_output {
+  my ($self) = @_;
+  ${$self->{string}} = "";
+  seek $self->{OUT}, 0, 0;
 }
 sub OUT {
   my ($self) = @_;
