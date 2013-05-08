@@ -12,7 +12,12 @@ sub startup {
   my $r = $self->routes;
 
   # Normal route to controller
-  $r->get('/')->to('endpoint#show_console');
+  $r->get('/')
+    ->to('endpoint#show_console')
+    ->name('show console');
+  $r->get('/ajax/hp')
+    ->to('endpoint#eval_repl')
+    ->name('eval repl');
 }
 
 1;
