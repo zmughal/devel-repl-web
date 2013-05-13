@@ -89,7 +89,7 @@
             try {
               var hpURL = '<%= url_for 'eval repl' %>';
               $.getJSON( hpURL, { cmd: command }, function( json ) {
-                jqconsole.Write('==> ' + json.data + '\n');
+                jqconsole.Write('==> ' + json.data + ":" + json.capture + '\n');
               });
             } catch (e) {
               jqconsole.Write('ERROR: ' + e.message + '\n');
