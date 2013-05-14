@@ -8,6 +8,7 @@
 
 * graph: graphviz, http://stackoverflow.com/questions/6344318/pure-javascript-graphviz-equivalent, https://code.google.com/p/canviz/
 * plot: http://www.flotcharts.org/, https://github.com/shutterstock/rickshaw, https://github.com/mbostock/d3
+  * see <https://github.com/jberger/Graphics-Flot>
 * volume: https://github.com/xtk/X
 * 2D image: use browswer for small images, use tiles for larger images
 * geo: http://leafletjs.com/
