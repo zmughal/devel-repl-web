@@ -19,6 +19,22 @@ sub BUILD {
 	# Devel::REPL::Plugin::OutputCache
 	$self->load_plugin('OutputCache');
 
+	# Devel::REPL::Plugin::Completion
+	$self->load_plugin('Completion');
+	$self->no_term_class_warning(1);
+		# do not warn that the ReadLine is not isa
+		# Term::ReadLine::Gnu or Term::ReadLine::Perl
+
+	$self->load_plugin($_) for (
+		'Completion',
+		'CompletionDriver::Keywords', # substr, while, etc
+		'CompletionDriver::LexEnv',   # current environment
+		'CompletionDriver::Globals',  # global variables
+		'CompletionDriver::INC',      # loading new modules
+		'CompletionDriver::Methods',  # class method completion
+		#'CompletionDriver::Turtles',  # turtle command completion
+	);
+
 	# TODO read config from file
 	# Devel::REPL::Script
 		#$self->load_plugin('DataPrinter');

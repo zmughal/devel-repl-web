@@ -20,3 +20,11 @@
 * activate completion within Devel::REPL
 * return the list to the browser
 * list options in drop-down
+
+# Documentation
+
+* look for module that analyzes POD for function documentation
+  <https://metacpan.org/module/Pod::Coverage>
+
+chromium --app="http://localhost:3000/"
+  <http://superuser.com/questions/33548/starting-google-chrome-in-application-mode>

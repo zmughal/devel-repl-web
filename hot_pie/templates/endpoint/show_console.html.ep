@@ -120,6 +120,14 @@
           });
         };
 
+        hpconsole.SetCompletionCallback( function ( text, response ) {
+          var complURL = '<%= url_for 'completion' %>';
+          var results;
+          $.getJSON( complURL, { text: text }, function( json ) {
+            response(json.results);
+          })
+        });
+
         // Initiate the first prompt.
         handler();
       });

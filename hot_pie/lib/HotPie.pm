@@ -15,9 +15,12 @@ sub startup {
   $r->get('/')
     ->to('endpoint#show_console')
     ->name('show console');
-  $r->get('/ajax/hp')
+  $r->get('/ajax/repl')
     ->to('endpoint#eval_repl')
     ->name('eval repl');
+  $r->get('/ajax/completion')
+    ->to('endpoint#completion')
+    ->name('completion');
 }
 
 1;

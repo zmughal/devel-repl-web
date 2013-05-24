@@ -24,6 +24,24 @@ sub eval_repl {
   });
 }
 
+sub completion {
+  my $self = shift;
+
+  my $text = $self->param('text');
+  my @results = ();
+  if ($repl->can("_completion")) {
+    @results = eval {
+      $repl->_completion($text, $text, 0);
+    };
+    @results = map { $_->[0] }
+      sort { $a->[1] <=> $b->[1]}
+      map { [$_, length $_ ] } @results
+  }
+  $self->render( json => {
+    results => \@results
+  });
+}
+
 sub run_repl {
   my ($repl, $cmd) = @_;
   $repl->term->cmd($cmd);
