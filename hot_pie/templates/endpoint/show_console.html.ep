@@ -4,8 +4,10 @@
 <html>
   <head>
     <link rel="stylesheet" href="css/ansi.css" type="text/css" media="all" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/jqconsole.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/vader/jquery-ui.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="js/hpconsole.min.js"></script>
     <style>
       html, body {
         background-color: #333;
@@ -60,42 +62,60 @@
       $(function() {
         // Creating the console.
         var header = 'Welcome to JQConsole!\n';
-        window.jqconsole = $('#console').jqconsole(header, 'HP> ');
+        window.hpconsole = $('#console').hpconsole(header, 'HP> ');
 
         // Abort prompt on Ctrl+Z.
-        jqconsole.RegisterShortcut('Z', function() {
-          jqconsole.AbortPrompt();
+        hpconsole.RegisterShortcut('Z', function() {
+          hpconsole.AbortPrompt();
           handler();
         });
 
         // Move to line start Ctrl+A.
-        jqconsole.RegisterShortcut('A', function() {
-          jqconsole.MoveToStart();
+        hpconsole.RegisterShortcut('A', function() {
+          hpconsole.MoveToStart();
           handler();
         });
 
         // Move to line end Ctrl+E.
-        jqconsole.RegisterShortcut('E', function() {
-          jqconsole.MoveToEnd();
+        hpconsole.RegisterShortcut('E', function() {
+          hpconsole.MoveToEnd();
           handler();
         });
 
-        jqconsole.RegisterMatching('{', '}', 'brace');
-        jqconsole.RegisterMatching('(', ')', 'paran');
-        jqconsole.RegisterMatching('[', ']', 'bracket');
+        // Delete previous word Ctrl+W
+        hpconsole.RegisterShortcut('W', function() {
+          hpconsole._Backspace(true);
+          handler();
+        });
+
+        // Delete from cursor position to beginning of line Ctrl+U
+        hpconsole.RegisterShortcut('U', function() {
+          hpconsole.BackspaceToBegin();
+          handler();
+        });
+
+        // Delete from cursor postion to end of line Ctrl+K
+        hpconsole.RegisterShortcut('K', function() {
+          hpconsole.DeleteToEnd();
+          handler();
+        });
+
+        hpconsole.RegisterMatching('{', '}', 'brace');
+        hpconsole.RegisterMatching('(', ')', 'paran');
+        hpconsole.RegisterMatching('[', ']', 'bracket');
         // Handle a command.
         var handler = function(command) {
           if (command) {
             try {
               var hpURL = '<%= url_for 'eval repl' %>';
               $.getJSON( hpURL, { cmd: command }, function( json ) {
-                jqconsole.Write('==> ' + json.data + ":" + json.capture + '\n');
+                hpconsole.Write('==> ' + json.data + ":" + json.capture + '\n');
               });
             } catch (e) {
-              jqconsole.Write('ERROR: ' + e.message + '\n');
+              hpconsole.Write('ERROR: ' + e.message + '\n');
             }
           }
-          jqconsole.Prompt(true, handler, function(command) {
+          hpconsole.Prompt(true, handler, function(command) {
             return false;
           });
         };
