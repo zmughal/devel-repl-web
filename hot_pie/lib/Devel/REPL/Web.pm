@@ -26,6 +26,8 @@ sub BUILD {
 		# Term::ReadLine::Gnu or Term::ReadLine::Perl
 
 	$self->load_plugin($_) for (
+		#'PPI',                        # PPI dumping of Perl code
+		#'MultiLine::PPI',             # allow multiple lines
 		'Completion',
 		'CompletionDriver::Keywords', # substr, while, etc
 		'CompletionDriver::LexEnv',   # current environment

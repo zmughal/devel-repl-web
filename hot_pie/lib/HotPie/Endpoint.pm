@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use Devel::REPL::Web;
 use Capture::Tiny ':all';
+use List::AllUtils qw/uniq/;
 
 my $repl = get_repl();
 has repl => sub { $repl };
@@ -33,9 +34,16 @@ sub completion {
     @results = eval {
       $repl->_completion($text, $text, 0);
     };
-    @results = map { $_->[0] }
-      sort { $a->[1] <=> $b->[1]}
-      map { [$_, length $_ ] } @results
+    die $@ if $@;
+    @results = uniq map { $_->[0] }
+      sort { $a->[1] <=> $b->[1] or
+               $a->[0] cmp $b->[0] }
+      map { [$_, length $_ ] }
+      grep { $_ !~ /_</ }
+      grep { $_ !~ /[\x00-\x20]/ }
+        # no control characters, whitespace (not
+        # sure why these are returned)
+      @results;
   }
   $self->render( json => {
     results => \@results
@@ -46,7 +54,7 @@ sub run_repl {
   my ($repl, $cmd) = @_;
   $repl->term->cmd($cmd);
   my $capture = capture_merged {
-	  $repl->run_once;
+    $repl->run_once;
   };
   return ($capture, $repl->last_output);
 }
