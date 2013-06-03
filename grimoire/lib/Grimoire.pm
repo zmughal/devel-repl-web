@@ -1,4 +1,4 @@
-package HotPie;
+package Grimoire;
 use Mojo::Base 'Mojolicious';
 
 # This method will run once at server start

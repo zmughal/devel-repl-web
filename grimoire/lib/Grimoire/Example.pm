@@ -1,4 +1,4 @@
-package HotPie::Example;
+package Grimoire::Example;
 use Mojo::Base 'Mojolicious::Controller';
 
 # This action will render a template

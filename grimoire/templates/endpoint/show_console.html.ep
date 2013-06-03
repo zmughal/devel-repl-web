@@ -1,5 +1,5 @@
 % layout 'default';
-% title 'Hot Pie!';
+% title 'Grimoire!';
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/vader/jquery-ui.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="js/hpconsole.min.js"></script>
+    <script src="js/grimconsole.min.js"></script>
     <style>
       html, body {
         background-color: #333;
@@ -62,65 +62,65 @@
       $(function() {
         // Creating the console.
         var header = 'Welcome to JQConsole!\n';
-        window.hpconsole = $('#console').hpconsole(header, 'HP> ');
+        window.grimconsole = $('#console').grimconsole(header, 'grim> ');
 
         // Abort prompt on Ctrl+Z.
-        hpconsole.RegisterShortcut('Z', function() {
-          hpconsole.AbortPrompt();
+        grimconsole.RegisterShortcut('Z', function() {
+          grimconsole.AbortPrompt();
           handler();
         });
 
         // Move to line start Ctrl+A.
-        hpconsole.RegisterShortcut('A', function() {
-          hpconsole.MoveToStart();
+        grimconsole.RegisterShortcut('A', function() {
+          grimconsole.MoveToStart();
           handler();
         });
 
         // Move to line end Ctrl+E.
-        hpconsole.RegisterShortcut('E', function() {
-          hpconsole.MoveToEnd();
+        grimconsole.RegisterShortcut('E', function() {
+          grimconsole.MoveToEnd();
           handler();
         });
 
         // Delete previous word Ctrl+W
-        hpconsole.RegisterShortcut('W', function() {
-          hpconsole._Backspace(true);
+        grimconsole.RegisterShortcut('W', function() {
+          grimconsole._Backspace(true);
           handler();
         });
 
         // Delete from cursor position to beginning of line Ctrl+U
-        hpconsole.RegisterShortcut('U', function() {
-          hpconsole.BackspaceToBegin();
+        grimconsole.RegisterShortcut('U', function() {
+          grimconsole.BackspaceToBegin();
           handler();
         });
 
         // Delete from cursor postion to end of line Ctrl+K
-        hpconsole.RegisterShortcut('K', function() {
-          hpconsole.DeleteToEnd();
+        grimconsole.RegisterShortcut('K', function() {
+          grimconsole.DeleteToEnd();
           handler();
         });
 
-        hpconsole.RegisterMatching('{', '}', 'brace');
-        hpconsole.RegisterMatching('(', ')', 'paran');
-        hpconsole.RegisterMatching('[', ']', 'bracket');
+        grimconsole.RegisterMatching('{', '}', 'brace');
+        grimconsole.RegisterMatching('(', ')', 'paran');
+        grimconsole.RegisterMatching('[', ']', 'bracket');
         // Handle a command.
         var handler = function(command) {
           if (command) {
             try {
-              var hpURL = '<%= url_for 'eval repl' %>';
-              $.getJSON( hpURL, { cmd: command }, function( json ) {
-                hpconsole.Write('==> ' + json.data + ":" + json.capture + '\n');
+              var grimURL = '<%= url_for 'eval repl' %>';
+              $.getJSON( grimURL, { cmd: command }, function( json ) {
+                grimconsole.Write('==> ' + json.data + ":" + json.capture + '\n');
               });
             } catch (e) {
-              hpconsole.Write('ERROR: ' + e.message + '\n');
+              grimconsole.Write('ERROR: ' + e.message + '\n');
             }
           }
-          hpconsole.Prompt(true, handler, function(command) {
+          grimconsole.Prompt(true, handler, function(command) {
             return false;
           });
         };
 
-        hpconsole.SetCompletionCallback( function ( text, response ) {
+        grimconsole.SetCompletionCallback( function ( text, response ) {
           var complURL = '<%= url_for 'completion' %>';
           var results;
           $.getJSON( complURL, { text: text }, function( json ) {

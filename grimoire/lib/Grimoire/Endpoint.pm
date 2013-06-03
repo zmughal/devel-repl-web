@@ -1,4 +1,4 @@
-package HotPie::Endpoint;
+package Grimoire::Endpoint;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Devel::REPL::Web;
